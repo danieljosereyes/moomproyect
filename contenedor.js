@@ -1,4 +1,5 @@
 const fs = require('fs')
+const express = require('express')
 
 class Productos {
     constructor (contenedor){
@@ -72,7 +73,7 @@ class Productos {
                 let informacion = await fs.promises.readFile(this.contenedor, 'utf-8')
                 let resultado = JSON.parse(informacion)
                 //Return array
-                return resultado
+                return await resultado
             }
         } catch (error) {
             console.log(error)
@@ -129,14 +130,32 @@ const ejecucionSave = async () => {
     console.log(await contenedor.save({title: 'Cama', price: 40000, thumbnail: 'imagen'}))
 
 }
-//Obtener id
-const getById = async () => console.log(await contenedor.getById(1))
 
-//Obtener Array
-const getAll = async () => console.log(await contenedor.getAll())
 
-//Eliminar por id
-const deleteById = async () => console.log(await contenedor.deleteById(1))
 
-//Eliminar todo
-const deleteAll = async () => console.log(await contenedor.deleteAll())
+
+
+//Aplicacion express
+const aplicacion = express()
+
+const PUERTO = 8080
+
+//array de todos los productos
+aplicacion.get('/productos', async (peticion, respuesta) => {
+    let stock = await contenedor.getAll()
+    respuesta.send(stock)
+})
+
+//array de productos aleatorios
+aplicacion.get('/productosRandom', async (peticion, respuesta) => {
+    let stock = await contenedor.getAll()
+    //Busco la logitud del stock y lo multiplico por el numero random 
+    let stockRandom = [stock[Math.floor(Math.random() * stock.length)]]
+    respuesta.send(stockRandom)
+})
+
+const conexionServidor = aplicacion.listen(PUERTO, () => {
+    console.log(`Escuchando el puerto ${conexionServidor.address().port}`)
+})
+
+conexionServidor.on('error', error => console.log(`Error en conexion al servidor ${error}`))
