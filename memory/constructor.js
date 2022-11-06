@@ -1,7 +1,7 @@
 const fs = require('fs')
-const express = require('express')
-
-class Productos {
+const { title } = require('process')
+//exporto la clase
+module.exports = class Productos {
     constructor (contenedor){
         this.contenedor = contenedor
     }
@@ -79,6 +79,31 @@ class Productos {
             console.log(error)
         }
     }
+    //metodo para actualizar el producto por id
+    update = async (productos, id) => {
+        try {
+            if(fs.existsSync(this.contenedor)){
+                let resultado = await this.getAll()
+                if(resultado.some(el => el.id == id)){
+
+                    let elemtoId = resultado.findIndex(el => el.id == id)
+                    resultado.splice(elemtoId, 1)
+                    let nuevoProducto = {
+                        id: id,
+                        ...productos
+                    }
+                    resultado.push(nuevoProducto)
+                    await fs.promises.writeFile(this.contenedor, JSON.stringify(resultado, null, 2))
+                    return await nuevoProducto
+                }else{
+                    console.log('No se encontro el archivo a eliminar')
+                    return null
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     //Metodo para eliminar el producto por id
     deleteById = async (numberId) => {
@@ -94,6 +119,7 @@ class Productos {
                     await fs.promises.writeFile(this.contenedor, JSON.stringify(resultado, null, 2))
                 }else{
                     console.log('No se encontro el archivo a eliminar')
+                    return null
                 }
                 
             }else{
@@ -119,43 +145,3 @@ class Productos {
     }
 
 }
-
-const contenedor =  new Productos ('productos.txt')
-
-//Crear archivo
-const ejecucionSave = async () => {
-    console.log(await contenedor.save({title: 'Lampara', price: 10, thumbnail: 'imagen'}))
-    console.log(await contenedor.save({title: 'Tapete', price: 200, thumbnail: 'imagen'}))
-    console.log(await contenedor.save({title: 'Luces', price: 3000, thumbnail: 'imagen'}))
-    console.log(await contenedor.save({title: 'Cama', price: 40000, thumbnail: 'imagen'}))
-
-}
-
-
-
-
-
-//Aplicacion express
-const aplicacion = express()
-
-const PUERTO = 8080
-
-//array de todos los productos
-aplicacion.get('/productos', async (peticion, respuesta) => {
-    let stock = await contenedor.getAll()
-    respuesta.send(stock)
-})
-
-//array de productos aleatorios
-aplicacion.get('/productosRandom', async (peticion, respuesta) => {
-    let stock = await contenedor.getAll()
-    //Busco la logitud del stock y lo multiplico por el numero random 
-    let stockRandom = [stock[Math.floor(Math.random() * stock.length)]]
-    respuesta.send(stockRandom)
-})
-
-const conexionServidor = aplicacion.listen(PUERTO, () => {
-    console.log(`Escuchando el puerto ${conexionServidor.address().port}`)
-})
-
-conexionServidor.on('error', error => console.log(`Error en conexion al servidor ${error}`))
