@@ -14,6 +14,11 @@ const productos = Router()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+
+//carpeta public
+/* app.use(express.static) */
+app.use('/static', express.static(__dirname + ('/public')))
+
 //devuelve todos los productos
 productos.get('/', async(req, res) => {
     const all = await contenedor.getAll()
