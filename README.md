@@ -1,9 +1,7 @@
-# moomproyect
+# Comentario
 
-### Entrega desafio servidor express  
+### Entrega del desafio motores de plantillas
 
-#### Todos los productos
-https://spark-balanced-saxophone.glitch.me/productos  
+#### De todos los motores de plantillas me desenvuelvo mejor con ejs, me parece mas amigable con javascript y no necesita leer mucha documentacion.
 
-#### Productos Random  
-https://spark-balanced-saxophone.glitch.me/productosRandom
+#### Pero en terminos de rendimiento la mejor es handlebar, se puede ahorrar mucho codigo pero es un poco complicado de usar
