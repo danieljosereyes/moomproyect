@@ -1,8 +1,8 @@
 //Require
 const express = require('express')
 const { Server: HttpServer } = require('http')
-const moment = require('moment/moment.js')
 const { Server: IOServer } = require('socket.io')
+const moment = require('moment/moment.js')
 
 const app = express()
 const httpServer = new HttpServer(app)
