@@ -8,7 +8,6 @@
   justify-content: space-between;
 }
 .Lista__Cabezera li{
-  border: 1px solid;
   list-style-type: none;
   width: 33.33%;
   text-align: center;
@@ -19,19 +18,17 @@
   justify-content: space-between;
 }
 .Lista__Ordenada li {
-  border: 1px solid;
   list-style-type: none;
   width: 33.33%;
   text-align: center;
 }
 .Lista__Ordenada div {
-  border: 1px solid;
   display: flex;
   justify-content: center;
   width: 33.33%;
 }
 .Lista__Ordenada div img {
-  width: 40px;
+  width: 20px;
 }
 
 form {
@@ -55,3 +52,20 @@ form {
     
     button {
       cursor: pointer; }
+
+#mensajes div p {
+  color: brown;
+}
+
+#mensajes div p strong {
+  color: blue;
+}
+
+#mensajes div em {
+  color: green;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
