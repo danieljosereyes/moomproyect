@@ -16,7 +16,7 @@ module.exports = class ContainerProduct {
                         ...objet
                     }
                     result.push(newProduct)
-                    await fs.promises.writeFile(this.container, JSON.stringify(result, null,2))
+                    await fs.promises.writeFile(this.container, JSON.stringify(result, null, 2))
                     return newId
                 } else{
                     let newProduct = {
@@ -29,7 +29,8 @@ module.exports = class ContainerProduct {
                 }
             } else {
                 let newProduct = {
-                    id:1,
+                    id: 1,
+                    timestamp: Date.now(),
                     ...objet
                 }
                 await fs.promises.writeFile(this.container, JSON.stringify([newProduct], null, 2))

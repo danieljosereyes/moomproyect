@@ -1,5 +1,6 @@
 const express = require('express')
 const routeProduct = require('./routes/Product.js')
+const routerShoppingCart = require('./routes/ShoppingCart.js')
 
 
 
@@ -14,7 +15,19 @@ app.use(express.urlencoded({ extended: true }))
 
 //Rutas
 app.use('/api/productos', routeProduct)
-app.use('/api/carrito', routeProduct)
+app.use('/api/carrito', routerShoppingCart)
+
+//Middleware
+app.use((req, res, next) => {
+    if (!req.route) {
+        res.status(404).send({
+            error: -2,
+            descripcion: `Ruta: ${req.url} no encontrada`
+        })
+    } else {
+        next()
+    }
+})
 
 //Servidor
 const server = app.listen(PORT, () => {
