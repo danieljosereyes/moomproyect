@@ -1,10 +1,11 @@
 const fs = require('fs')
+const shoppingCart = require('../routes/ShoppingCart')
 
 module.exports = class ShoppingCart {
     constructor (cart) {
         this.cart = cart
     }
-    
+    //Crea la estructura de carrito
     async save (objet) {
         try {
             if (fs.existsSync(this.cart)) {
@@ -15,7 +16,7 @@ module.exports = class ShoppingCart {
                     let newShoppingCart = {
                         id: newId,
                         timestamp: Date.now(),
-                        productos: [{...objet}]
+                        productos: []
                     }
                     result.push(newShoppingCart)
                     await fs.promises.writeFile(this.cart, JSON.stringify(result, null, 2))
@@ -24,17 +25,17 @@ module.exports = class ShoppingCart {
                     let newShoppingCart = {
                         id: 1,
                         timestamp: Date.now(),
-                        productos: [{...objet}]
+                        productos: []
                     }
                     result.push(newShoppingCart)
-                    await fs.promises.writeFile(this.cart, JSON.stringify([newShoppingCart], null, 2))
+                    await fs.promises.writeFile(this.cart, JSON.stringify(newShoppingCart, null, 2))
                     return 1
                 }
             } else{
                 let newShoppingCart = {
                     id: 1,
                     timestamp: Date.now(),
-                    productos: [{...objet}]
+                    productos: []
                 }
                 await fs.promises.writeFile(this.cart, JSON.stringify([newShoppingCart], null, 2))
                 return 1
@@ -43,50 +44,31 @@ module.exports = class ShoppingCart {
             console.log(error)
         }
     }
-    async saveIdShoppingCart (id, objet) {
+    //Guarda un produto si encuetra un id carrito.
+    //Si no encuentra un carrito, creara uno y agregara el objeto
+    async saveIdShoppingCart (id_prod, objet) {
         try {
             let result = await this.getAll()
-            let index = result.findIndex(el => el.id == id)
+            let index = result.findIndex(el => el.id == id_prod)
             if (index != -1) {
-                let product = result[index].productos
-                let idProduct = product[product.length-1].id+1
-                
-                let newProduct = {
-                    id: idProduct,
-                    ...objet
-                }
-                result[index].productos.push(newProduct)
+                result[index].productos.push(objet)
                 await fs.promises.writeFile(this.cart, JSON.stringify(result, null, 2))
-                return idProduct
+                return objet
             } else {
-                console.log('Carrito no encontrado')     
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    async deleteProductById (idCart, idProduct) {
-        try {            
-            let result = await this.getAll()
-            let index = result.findIndex(el => el.id == idCart)
-            if (index != -1) {
-                let product = result[index].productos
-                let indexProduct = product.findIndex(el => el.id == idProduct)
-                console.log(idProduct)
-                if (indexProduct != -1) {
-                    result[index].productos.splice(indexProduct, 1)
-                    await fs.promises.writeFile(this.cart, JSON.stringify(result, null, 2))
-                    return idProduct
-                } else {
-                    console.log('Producto no encontrado')
+                console.log(objet)
+                let newShoppingCart = {
+                    id: 1,
+                    timestamp: Date.now(),
+                    productos: [objet]
                 }
-            } else {
-                console.log('Carrito no encontrado')
+                await fs.promises.writeFile(this.cart, JSON.stringify([newShoppingCart], null, 2))
+                return objet
             }
         } catch (error) {
             console.log(error)
         }
     }
+    //Obtiene el array de carrito
     async getAll () {
         try {
             let information = await fs.promises.readFile(this.cart,'utf-8')
@@ -97,12 +79,13 @@ module.exports = class ShoppingCart {
             console.log(error)
         }
     }
+    //Vacia el carrito por id y lo elimina 
     async deleteById (id) {
         try {
             let result = await this.getAll()
             let index = result.findIndex(el => el.id == id)
             if (index != -1) {
-                result.splice(indice, 1)
+                result.splice(index, 1)
                 await fs.promises.writeFile(this.cart, JSON.stringify(result, null , 2))
                 return id
             } else {
@@ -112,15 +95,40 @@ module.exports = class ShoppingCart {
             console.log(error)
         }
     }
+    //Lista todos los productos guardados en ek carrito
     async getProductCartById (id) {
         try {
             let result = await this.getAll()
-            let getById = parseInt(id)
-            let index = result.findIndex(el => el.id == getById)
+            let index = result.findIndex(el => el.id == id)
             if (index != -1) {
                 return result[index].productos
             } else {
                 console.log('Carrito no encontrado')
+                return "carrito no encontrado"
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    //Elimina producto del carrito por id de producto y del carrito
+    async deleteProductById (idCart, idProduct) {
+        try {            
+            let result = await this.getAll()
+            let index = result.findIndex(el => el.id == idCart)
+            if (index != -1) {
+                let product = result[index].productos
+                let indexProduct = product.findIndex(el => el.id == idProduct)
+                if (indexProduct != -1) {
+                    result[index].productos.splice(indexProduct, 1)
+                    await fs.promises.writeFile(this.cart, JSON.stringify(result, null, 2))
+                    return idProduct
+                } else {
+                    console.log('Producto no encontrado')
+                    return false
+                }
+            } else {
+                console.log('Carrito no encontrado')
+                return false
             }
         } catch (error) {
             console.log(error)

@@ -1,8 +1,7 @@
+//Require
 const express = require('express')
 const routeProduct = require('./routes/Product.js')
 const routerShoppingCart = require('./routes/ShoppingCart.js')
-
-
 
 //express
 const app = express()

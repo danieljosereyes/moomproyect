@@ -1,34 +1,19 @@
 const express = require('express')
+const Product = require('../container/containerProduct.js')
 const ShoppingCart = require('../container/containerShoppingCart.js')
 const shoppingCart = express.Router()
 
 const dbShoppingCart = new ShoppingCart('./db/shoppingCart.txt')
-
-const estructura = {
-    id: 1,
-    timestamp: Date.now(),
-    productos: {
-        id: 2,
-        timestamp: 1,
-        nombre: "balon",
-        descripcion: "balon de futbol",
-        codigo: 4161,
-        foto: "url",
-        precio: 10,
-        stock: 3
-    }
-}
+const dbProduct = new Product('./db/product.txt')
 
 
+//Crea el carrito de compras
 shoppingCart.post('/', async (req, res) => {
-    let result = req.body
-    await dbShoppingCart.save(result)
+    let result = await dbShoppingCart.save()
 
-    res.send({
-        status: "ok"
-    })
+    res.json(result)
 })
-
+//elimina el carrito completo por id
 shoppingCart.delete('/:id', async(req, res) => {
     let id = req.params.id
     await dbShoppingCart.deleteById(id)
@@ -37,31 +22,40 @@ shoppingCart.delete('/:id', async(req, res) => {
         status: "ok"
     })
 })
-
+//Obtiene el Carrito de productos
 shoppingCart.get('/:id/productos', async (req, res) => {
     let id = req.params.id
     let information = await dbShoppingCart.getProductCartById(id)
-
-    res.json([information])
+    if (information.length == 0) {
+        res.json("No hay Productos")
+    } else {
+        res.json([information])   
+    }
 })
-
+//Ubica el carrito por id y le agrega un producto por el id indicado
+//Si no ubica el carrito, creara uno y agregara el producto por el id indicado
 shoppingCart.post('/:id/productos', async (req, res) => {
     let id = req.params.id
-    let product = req.body
-    await dbShoppingCart.saveIdShoppingCart(id, product)
+    let result = await dbProduct.getById(id)
+    await dbShoppingCart.saveIdShoppingCart(id, result)
 
-    res.send({
-        status: "ok"
-    })
+    res.json(result)
 })
+//Ubica el carrito por id y le elimina un producto encontrado
 shoppingCart.delete('/:id/productos/:id_prod', async (req, res) => {
     let idCart = req.params.id
     let idProduct = req.params.id_prod
-    await dbShoppingCart.deleteProductById(idCart, idProduct)
-    res.send({
-        status: idCart,
-        clausura: idProduct
-    })
+    let condition = await dbShoppingCart.deleteProductById(idCart, idProduct)
+    if (condition) {
+        res.json({
+            idCart: idCart,
+            idProduct: `Delete Product id: ${idProduct}`
+        })
+    } else {
+        res.json({
+            status: "No exite el producto"
+        })
+    }
 })
 
 module.exports = shoppingCart
