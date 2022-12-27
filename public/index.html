@@ -33,9 +33,14 @@
     </div>
     <div>
         <h2 class="center" >Mensajeria</h2>
-        <form onsubmit="return addMensaje(this) ">
-            <input type="email" name="user" id="user" placeholder="usuario">
-            <input type="text" name="texto" id="texto" placeholder="mensaje">
+        <form id="formEnviarMensaje" autocomplete="off" ><!-- onsubmit="return addMensaje(this) " -->
+            <input type="email" name="inputId" id="inputId" placeholder="email">
+            <input type="text" name="inputNombre" id="inputNombre" placeholder="nombre">
+            <input type="text" name="inputApellido" id="inputApellido" placeholder="apellido">
+            <input type="text" name="inputEdad" id="inputEdad" placeholder="edad">
+            <input type="text" name="inputAlias" id="inputAlias" placeholder="alias">
+            <input type="text" name="inputAvatar" id="inputAvatar" placeholder="avatar">
+            <input type="text" name="inputMensaje" id="inputMensaje" placeholder="mensaje">
             <button type="submit">ENVIAR</button>
         </form>
         <div id="mensajes"></div>
