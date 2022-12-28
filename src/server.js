@@ -4,6 +4,8 @@ const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 const moment = require('moment/moment.js')
 
+const { normalize, schema } = require("normalizr");
+
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -52,12 +54,37 @@ io.on('connection', async (socket) => {
 
     //mensajeria
     const listMensajes = await mensajes.getAll()
-    socket.emit('mensajes', listMensajes)
+    socket.emit('mensajes', await obtenerMensajesNormalizados())
 
     socket.on('nuevo-mensaje', async data => {
         data.time = moment(new Date()).format('DD/MM/YYY hh:mm:ss')
         await mensajes.save(data)
-        const listMensajes = await mensajes.getAll()
-        io.sockets.emit('mensajes', listMensajes)
+
+        // const listMensajes = await mensajes.getAll()
+        io.sockets.emit('mensajes', await obtenerMensajesNormalizados())
     })
 })
+
+// -------------------------------------------
+// Definicion de esquemas
+
+const autorSchema = new schema.Entity('autor', {}, { idAttribute: 'email' });
+
+const mensajeSchema = new schema.Entity('post', {
+    autor: autorSchema
+}, { idAttribute: 'id' });
+
+const mensajesSchema = new schema.Entity('posts', {
+    mensajes: [mensajeSchema]
+}, { idAttribute: 'id' });
+
+// -------------------------------------------
+// Funciones custom
+
+const obtenerMensajesNormalizados = async () => {
+    const arregloMensajes = await mensajes.getAll();
+    return normalize({
+        id: 'mensajes',
+        mensajes: arregloMensajes,
+    }, mensajesSchema);
+};

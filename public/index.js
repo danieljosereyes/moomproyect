@@ -1,4 +1,8 @@
-const socket = io();
+// const { schema } = require("normalizr");
+
+// const  schema  = require("normalizr");
+
+const socket = io.connect();
 
 
 function renderProducto(producto) {
@@ -46,11 +50,33 @@ function addProduct(e) {
     socket.emit('new-product', producto);
     return false;
   }
+  
 
-//mensajes
-function render (data) {
-  console.log(data)
-  const html = data.map((el, index) => {
+//-------------------------------------------------------------------------------------
+
+
+// Definicion de esquemas
+
+const autorSchema = new normalizr.schema.Entity('autor', {}, { idAttribute: 'email' });
+
+const mensajeSchema = new normalizr.schema.Entity('post', {
+    autor: autorSchema
+}, { idAttribute: 'id' });
+
+const mensajesSchema = new normalizr.schema.Entity('posts', {
+    mensajes: [mensajeSchema]
+}, { idAttribute: 'id' });
+
+// -------------------------------------------
+
+
+//Render de mensajes
+function render (mensajes) {
+  console.log(mensajes)
+  const mensajesDesnormalizados = normalizr.denormalize(mensajes.result, mensajesSchema, mensajes.entities);
+console.log('aqui voy')
+console.log(mensajesDesnormalizados)
+  const html = mensajesDesnormalizados.mensajes.map((el) => {
     return(`<div>
               <p><strong>${el.author.id}</strong> [${el.time}]:</p>
               <em>${el.texto}</em>
@@ -61,6 +87,8 @@ function render (data) {
 
 socket.on('mensajes', function(data) { render(data) })
 
+
+//array mensajes
 const formEnviarMensaje = document.getElementById("formEnviarMensaje")
 formEnviarMensaje.addEventListener('submit', e => {
   e.preventDefault()
@@ -88,23 +116,23 @@ formEnviarMensaje.addEventListener('submit', e => {
 
 })
 
-function addMensaje (e) {
-  const mensaje = {
-    author: {
-      id: document.getElementById("id").value,
-      nombre: document.getElementById("nombre").value,
-      apellido: document.getElementById("apellido").value,
-      edad: document.getElementById("edad").value,
-      alias: document.getElementById("alias").value,
-      avatar: document.getElementById("avatar").value,
+// function addMensaje (e) {
+//   const mensaje = {
+//     author: {
+//       id: document.getElementById("id").value,
+//       nombre: document.getElementById("nombre").value,
+//       apellido: document.getElementById("apellido").value,
+//       edad: document.getElementById("edad").value,
+//       alias: document.getElementById("alias").value,
+//       avatar: document.getElementById("avatar").value,
   
-    },
-    texto: document.getElementById("texto").value
-  }
-  if(mensaje.user) {
-    socket.emit('nuevo-mensaje', mensaje)
-  }else{
-    alert('Ingrese usuario')
-  }
-  return false;
-}
+//     },
+//     texto: document.getElementById("texto").value
+//   }
+//   if(mensaje.user) {
+//     socket.emit('nuevo-mensaje', mensaje)
+//   }else{
+//     alert('Ingrese usuario')
+//   }
+//   return false;
+// }
