@@ -1,1 +1,0 @@
-Los comandos estan en los archivos de texto
