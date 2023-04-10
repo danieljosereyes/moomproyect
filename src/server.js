@@ -1,5 +1,8 @@
-//Require app.js
 const app = require("./app.js")
+
+require('./database.js')
+
+const { PORT }= require('./config')
 
 // const express = require('express')
 const session = require('express-session')
@@ -8,7 +11,7 @@ const cookieParser = require('cookie-parser')
 //Require connect Mongo
 const MongoStore = require('connect-mongo')
 //Require File Session Store
-// const FileStore = require('session-file-store')(session)
+const FileStore = require('session-file-store')(session)
 //Require http
 const { Server: HttpServer } = require('http')
 const httpServer = new HttpServer(app)
@@ -39,43 +42,45 @@ const procesadores = os.cpus().length
 
 
 
-require('./database.js')
+
 
 
 
 const PRIVATE_KEY = 'sdf#R"#$&/(/('
 
-const yargs = require("yargs")(process.argv.slice(2));
+// const yargs = require("yargs")(process.argv.slice(2));
 
 
 
 
 // args//
-const { puerto, _ } = yargs
-.alias({
-  p: 'puerto'
-})
-.default({
-  puerto: 8080
-})
-.argv;
+// const { puerto, _ } = yargs
+// .alias({
+//   p: 'puerto'
+// })
+// .default({
+//   puerto: 8080
+// })
+// .argv;
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 app.use(cookieParser())
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://rooteado:YXhF8AC7AKYzPEI5@cluster0.i7qjgjd.mongodb.net/session?retryWrites=true&w=majority',
-        mongoOptions: advancedOptions,
-        ttl: 10 * 60
-    }),
+app.use(
+    session({
+    // store: MongoStore.create({
+    //     mongoUrl: 'mongodb+srv://rooteado:YXhF8AC7AKYzPEI5@cluster0.i7qjgjd.mongodb.net/session?retryWrites=true&w=majority',
+    //     mongoOptions: advancedOptions,
+    //     ttl: 10 * 60
+    // }),
 
-    // store: new FileStore({path: './sessiones', ttl: 30000, retries: 0}),
+    store: new FileStore({path: './sessiones', ttl: 30000, retries: 0}),
 
     secret: 'secreto',
     resave: false,
     saveUninitialized: false,
     
-}))
+}
+))
 
 
 //export contructor productos
@@ -85,11 +90,11 @@ const Productos = require('./container/constructor.js')
 const contenedor =  new Productos ('./src/db/productos.txt')
 const mensajes = new Productos ('./src/db/mensajes.txt')
 
-//Carpeta views ejs
-app.set('view engine', 'ejs')
+// //Carpeta views ejs
+// app.set('view engine', 'ejs')
 
 //puerto y rutas
-const PORT = puerto
+// const PORT = puerto
 // const PORT = process.argv[2] || 8080
 
 
@@ -172,15 +177,15 @@ const generateToken = (usuario) => {
 //Render
 
 
-app.get('/', (req, res) => {
-    if(req.isAuthenticated()){
-        res.redirect("/datos")
+// app.get('/', (req, res) => {
+//     if(req.isAuthenticated()){
+//         res.redirect("/datos")
         
-    }else{
-        res.redirect("/login")
+//     }else{
+//         res.redirect("/login")
 
-    }
-})
+//     }
+// })
 app.get('/register', (req, res) => {
     res.render("pages/register")
 })
