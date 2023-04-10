@@ -3,10 +3,8 @@ const Roles = require('../models/Role')
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../config')
 
-const signUp = async(req, res) => {
+const signUp = async (req, res) => {
     const { usuario, mobil, email, password, roles } = req.body
-
-    // const userFound = await User.find({email})
 
     const newUser = new User({
         usuario, 

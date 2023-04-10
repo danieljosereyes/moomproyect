@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const app = express();
 
 const { createRoles } = require('./libs/initialSetup')
-// createRoles()
+createRoles()
 
 
 //Unlecoded
