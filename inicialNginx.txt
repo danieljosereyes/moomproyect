@@ -1,0 +1,15 @@
+# Entrar a la carpeta nginx con la consola comand promnt
+cd nginx
+
+# Iniciar aplicacion
+nginx.exe
+
+# Detener aplicacion
+nginx.exe -s stop
+
+
+## Puede comprobar su funcionamiento en las rutas
+
+http://localhost/api/info
+
+http://localhost/api/randoms?cantidad=100

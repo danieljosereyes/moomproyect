@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+    <title>index</title>
+</head>
+<body>
+    
+    <div>
+        <h2>Login Ok</h2>
+        <h3>Bienvenido <%= nombre %></h3>
+        <button onclick="location.href = '/logout'">logout</button>
+    </div>
+
+    <h1 class="center">Formulario Productos No puede ser</h1>
+    <form method="get" onsubmit="return addProduct(this)">
+        <input type="text" id="title" name="title" placeholder="title">
+        <input type="text" id="price" name="price" placeholder="price">
+        <input type="text" id="thumbnail", name="thumbnail", placeholder="thumbnail">
+        <button type="submit">ENVIAR</button>
+    </form>
+
+    <div>
+        <h1 class="center">Listado Productos</h1>
+        <!-- render lista -->
+        <ul class="Lista__Cabezera">
+            <li>Nombre</li>
+            <li>Precio</li>
+            <li>Imagen</li>
+        </ul>
+
+        <div id="lista">
+            <!-- Render lista -->
+        </div>
+    </div>
+    <div>
+        <h2 class="center" >Mensajeria</h2>
+        <form id="formEnviarMensaje" autocomplete="off" >
+            <input type="email" name="inputId" id="inputId" placeholder="email">
+            <input type="text" name="inputNombre" id="inputNombre" placeholder="nombre">
+            <input type="text" name="inputApellido" id="inputApellido" placeholder="apellido">
+            <input type="text" name="inputEdad" id="inputEdad" placeholder="edad">
+            <input type="text" name="inputAlias" id="inputAlias" placeholder="alias">
+            <input type="text" name="inputAvatar" id="inputAvatar" placeholder="avatar">
+            <input type="text" name="inputMensaje" id="inputMensaje" placeholder="mensaje">
+            <button type="submit">ENVIAR</button>
+        </form>
+        
+        <div id="mensajes">
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Entrar en la carpeta src para ejecutar 
+cd src
+
+# Encender servidor 0 modo fork
+pm2 start server.js --name=Server_0 --watch -- -p 8080
+
+# Encender servidor 1 modo cluster
+pm2 start server.js --name="Server_1" --watch -i max -- -p 8081
+
+# Encender servidor 2 modo fork
+pm2 start server.js --name=Server_2 --watch -- -p 8082
+
+
+# Detener todos los servicios
+pm2 stop all
+
+# Eliminar todos los servicios
+pm2 delete all
+
