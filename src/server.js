@@ -64,24 +64,24 @@ const PRIVATE_KEY = 'sdf#R"#$&/(/('
 // })
 // .argv;
 
-const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
-app.use(cookieParser())
-app.use(
-    session({
-    // store: MongoStore.create({
-    //     mongoUrl: 'mongodb+srv://rooteado:YXhF8AC7AKYzPEI5@cluster0.i7qjgjd.mongodb.net/session?retryWrites=true&w=majority',
-    //     mongoOptions: advancedOptions,
-    //     ttl: 10 * 60
-    // }),
+// const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
+// app.use(cookieParser())
+// app.use(
+//     session({
+//     // store: MongoStore.create({
+//     //     mongoUrl: 'mongodb+srv://rooteado:YXhF8AC7AKYzPEI5@cluster0.i7qjgjd.mongodb.net/session?retryWrites=true&w=majority',
+//     //     mongoOptions: advancedOptions,
+//     //     ttl: 10 * 60
+//     // }),
 
-    store: new FileStore({path: './sessiones', ttl: 30000, retries: 0}),
+//     // store: new FileStore({path: './sessiones', ttl: 30000, retries: 0}),
 
-    secret: 'secreto',
-    resave: false,
-    saveUninitialized: false,
+//     secret: 'secreto',
+//     resave: false,
+//     saveUninitialized: false,
     
-}
-))
+// }
+// ))
 
 
 //export contructor productos
@@ -219,10 +219,10 @@ app.get('/datos', (req, res) => {
     }
 })
 
-app.get('/logout', (req, res) => {
-    req.logout(() => {})
-    res.redirect('/')
-})
+// app.get('/logout', (req, res) => {
+//     req.logout(() => {})
+//     res.redirect('/')
+// })
 
 
 

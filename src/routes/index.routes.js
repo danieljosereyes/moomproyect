@@ -1,7 +1,8 @@
 const { Router } = require('express')
+const { isNotAuthorized } = require('../util/auth')
 const router = Router()
 
-router.get('/', (req, res) => {
+router.get('/', isNotAuthorized,(req, res) => {
     res.render("pages/home")
 })
 
