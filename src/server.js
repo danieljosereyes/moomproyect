@@ -3,6 +3,7 @@ const app = require("./app.js")
 require('./database.js')
 
 const { PORT }= require('./config')
+require('./strategies/facebookStrategy')
 
 // const express = require('express')
 const session = require('express-session')
@@ -26,7 +27,7 @@ const { normalize, schema } = require("normalizr");
 const passport = require('passport')
 const { Strategy: LocalStrategy} = require('passport-local')
 //Require Facebook
-const { Strategy: FacebookStrategy} = require('passport-facebook')
+// const { Strategy: FacebookStrategy} = require('passport-facebook')
 //Require jsonwebtoken
 const jwt = require('jsonwebtoken')
 //cluster
@@ -123,29 +124,29 @@ passport.use('register', new LocalStrategy({
 }
 ))
 
-passport.use('login', new LocalStrategy(( username, password, done ) => {
-    const usuario = usuarios.find((usuario) => usuario.username == username && usuario.password == password)
-    if(!usuario){
-        return done(null, false)
-    }
+// passport.use('login', new LocalStrategy(( username, password, done ) => {
+//     const usuario = usuarios.find((usuario) => usuario.username == username && usuario.password == password)
+//     if(!usuario){
+//         return done(null, false)
+//     }
 
-    usuario.contador = 0
-    return done(null, usuario)
-}))
+//     usuario.contador = 0
+//     return done(null, usuario)
+// }))
 
 //Credenciales 
 const FACEOBOOK_CLIENT_ID = '1505181936633231'
 const FACEOBOOK_CLIENT_SECRET = '5ec69e6ca06a87ddf0daed7a45fe4511'
 
-passport.use(new FacebookStrategy({
-    clientID: FACEOBOOK_CLIENT_ID,
-    clientSecret: FACEOBOOK_CLIENT_SECRET,
-    callbackURL: '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'email'],
-    scope: ['email']
-}, (accessToken, refreshToken, userProfile, done) => {
-    return done(null, userProfile)
-}))
+// passport.use(new FacebookStrategy({
+//     clientID: FACEOBOOK_CLIENT_ID,
+//     clientSecret: FACEOBOOK_CLIENT_SECRET,
+//     callbackURL: '/auth/facebook/callback',
+//     profileFields: ['id', 'displayName', 'email'],
+//     scope: ['email']
+// }, (accessToken, refreshToken, userProfile, done) => {
+//     return done(null, userProfile)
+// }))
 
 passport.serializeUser((user, done) => {
     done(null, user)
@@ -159,11 +160,11 @@ app.use(passport.session())
 
 //Endpoints Facebook
 
-app.get('/auth/facebook', passport.authenticate('facebook'))
-app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/loginError'
-}))
+// app.get('/auth/facebook', passport.authenticate('facebook'))
+// app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+//     successRedirect: '/',
+//     failureRedirect: '/loginError'
+// }))
 
 
 
@@ -198,11 +199,11 @@ app.get('/registerError', (req, res) => {
 })
 
 
-app.get('/login', (req, res) => {
-    res.render("pages/login")
-})
+// app.get('/login', (req, res) => {
+//     res.render("pages/login")
+// })
 
-app.post('/login' , passport.authenticate('login', { failureRedirect: '/loginError', successRedirect: '/datos'}))
+// app.post('/login' , passport.authenticate('login', { failureRedirect: '/loginError', successRedirect: '/datos'}))
 
 app.get('/loginError', (req, res) => {
     res.render("pages/login-error")

@@ -2,7 +2,7 @@ const { Router } = require('express')
 const router = Router()
 
 router.get('/', (req, res) => {
-    res.json('ok')
+    res.json('inicial')
 })
 
 module.exports = router

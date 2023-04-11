@@ -2,9 +2,13 @@ const express = require('express');
 const morgan = require("morgan");
 const app = express();
 const path = require('path')
-
 const { createRoles } = require('./libs/initialSetup')
 createRoles()
+require('./strategies/facebookStrategy')
+
+const session = require('express-session')
+const passport = require('passport')
+
 app.use(morgan('dev'));
 
 
@@ -21,7 +25,13 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 //Middelwares
-
+app.use(session({
+    secret: 'Esto es secreto',
+    resave: false,
+    saveUninitialized: false,
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Routes
 const index = require('./routes/index.routes.js')
@@ -35,7 +45,7 @@ app.use('/', index)
 app.use('/dashboard', dashboard)
 app.use('/api/info', apiInfo)
 app.use('/api/products', apiProduct)
-app.use('/api/auth', apiAuthRoutes)
+app.use('/auth', apiAuthRoutes)
 
 //Global
 
