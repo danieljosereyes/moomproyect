@@ -20,6 +20,9 @@ passport.use(new FacebookStrategy({
         scope: ['email']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
+            const userFound = await UserStrategy.findOne({facebookId: profile.id})
+            if (userFound) return done(null, userFound)
+
             const newUserStrategy = new UserStrategy({
                 facebookId: profile.id, 
                 username: profile.displayName
