@@ -8,10 +8,11 @@
 </head>
 <body>
     
-<% if (user) { %>
-    <h2>Bienvenido <%- user.username %>  </h2>
-    <a href="/auth/logout">logout</a>
-<% } %>
+    <% if (user) { %>
+        <h2>Bienvenido <%- user.username %>  </h2>
+        <a href="/auth/logout">logout</a>
+    <% } %>
 
+    <!-- <%- include('../partials/socket); %> -->
 </body>
 </html>

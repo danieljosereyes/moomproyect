@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+    <title>Chat</title>
+</head>
+<body>
+    <h1>Hello Chat</h1>
+
+    <form id="formularioChat">
+        <input id="email" type="email">
+        <input id="tipo" type="text">
+        <textarea id="mensaje" rows="10"></textarea>
+        <button type="submit">Enviar</button>
+
+    </form>
+    <%- include('../partials/socket'); %>
+</body>
+</html>
