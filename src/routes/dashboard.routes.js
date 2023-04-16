@@ -3,8 +3,12 @@ const router = Router()
 const  { isAuthrized } = require('../util/auth')
 
 router.get('/', isAuthrized, (req, res) => {
-    
-    res.render('pages/dashboard')
+    try {
+        res.render('pages/dashboard')
+        
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 module.exports = router

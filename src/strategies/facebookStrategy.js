@@ -21,18 +21,19 @@ passport.use(new FacebookStrategy({
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             
+            console.log(profile.emails[0].value)
             const userFound = await UserStrategy.findOne({facebookId: profile.id})
             if (userFound) return done(null, userFound)
 
             const newUserStrategy = new UserStrategy({
                 facebookId: profile.id, 
-                username: profile.displayName
+                username: profile.displayName,
+                email: profile.emails[0].value
              });
+            console.log(newUserStrategy)
             
-            
-            // console.log(newUserStrategy)
-            await newUserStrategy.save() 
-            return done(null, newUserStrategy)
+            // await newUserStrategy.save() 
+            // return done(null, newUserStrategy)
         } catch (error) {
             console.log(error)
             return done(error, null)

@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { getChat } = require('../controllers/chat.controlles')
-
-router.get("/", getChat)
+const { isAuthrized } =require('../util/auth')
+router.get("/", isAuthrized, getChat)
 
 module.exports = router
