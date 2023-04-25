@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "e23e8de0-f5f9-4414-9287-86eb6d1a8751",
+		"name": "products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24168085"
+	},
+	"item": [
+		{
+			"name": "CreateProduct",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzM3MzBjNTdjMDMwMjY4MzQzYjdkOCIsImlhdCI6MTY4MTA5MzQwMSwiZXhwIjoxNjgxMTc5ODAxfQ.SF2BnlnfXgczVYTeQHkTy-dh0LVOK5TKPdiYDrJS7nI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"imgUrl\": \"link\",\r\n    \"precio\": 500,\r\n    \"descripcion\": \"Prototipo Cañon de Riel V2\",\r\n    \"categoria\": \"Trasporte\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetProduct",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetProductById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products/643309eba29e13cab6788c07",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"643309eba29e13cab6788c07"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateProductById",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descripcion\": \"Dron Reparador V2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/64330bdf485f816bd56f04c5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"64330bdf485f816bd56f04c5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteProductById",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzM3MzBjNTdjMDMwMjY4MzQzYjdkOCIsImlhdCI6MTY4MTA5NDUxNywiZXhwIjoxNjgxMTgwOTE3fQ.BC_a8c5CKYS9_BJLd6YNUQyD50AdZTciZKXLZffJ2hk",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/products/6433748c62337d5fa2c2d062",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"6433748c62337d5fa2c2d062"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

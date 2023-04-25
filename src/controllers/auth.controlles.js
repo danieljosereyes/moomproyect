@@ -49,7 +49,15 @@ const signIn = async (req, res) => {
     res.json({token})
 }
 
+const logout = (req, res, next) => {
+    if (req.user) req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
+}
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    logout
 }

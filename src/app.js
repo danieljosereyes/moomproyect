@@ -52,15 +52,17 @@ const index = require('./routes/index.routes.js')
 const dashboard = require('./routes/dashboard.routes.js')
 const apiInfo = require('./routes/info.js')
 const apiProduct = require('./routes/products.routes.js')
+const shoppingCart = require('./routes/shoppingCart.routes.js')
 const apiAuthRoutes = require('./routes/auth.routes.js');
 const apiChat = require('./routes/chat.router.js');
 
-// const apiRandoms = require('./routes/randoms.js')
+
 
 app.use('/', index)
 app.use('/dashboard', dashboard)
 app.use('/api/info', apiInfo)
 app.use('/api/products', apiProduct)
+app.use('/carrito', shoppingCart)
 app.use('/auth', apiAuthRoutes)
 app.use('/chat', apiChat)
 
